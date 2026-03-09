@@ -1,0 +1,107 @@
+.filter-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-btn {
+    background: white;
+    color: #2874f0;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0;
+    transition: 0.2s;
+}
+
+.filter-btn:hover {
+    background: #f1f3f6;
+}
+
+.filter-menu {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background: white;
+    min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    z-index: 1000;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+.filter-dropdown-container:hover .filter-menu {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.filter-item {
+    padding: 12px 20px;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+}
+
+.filter-item:hover {
+    background: #f1f3f6;
+    color: #2874f0;
+}
+
+.filter-submenu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background: white;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+.filter-item.has-submenu:hover .filter-submenu {
+    display: block;
+    animation: fadeInSemi 0.2s ease-in-out;
+}
+
+.filter-submenu p {
+    padding: 10px 20px;
+    margin: 0;
+    color: #333;
+    transition: 0.2s;
+}
+
+.filter-submenu p:hover {
+    background: #f1f3f6;
+    color: #2874f0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInSemi {
+    from {
+        opacity: 0;
+        transform: translateX(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

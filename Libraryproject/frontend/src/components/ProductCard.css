@@ -1,0 +1,134 @@
+.product-card {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5px);
+}
+
+.product-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-brand {
+    font-size: 16px;
+    font-weight: 700;
+    color: #212121;
+    margin: 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-category {
+    font-size: 13px;
+    color: #757575;
+    margin-bottom: 8px;
+}
+
+.product-rating {
+    font-size: 14px;
+    color: #ffa000;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #212121;
+    margin-bottom: 15px;
+}
+
+.product-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.cart-btn,
+.buy-btn {
+    flex: 1;
+    padding: 10px 5px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    text-align: center;
+}
+
+.cart-btn {
+    background: #ff9f00;
+    color: white;
+}
+
+.cart-btn:hover {
+    background: #f39700;
+}
+
+.buy-btn {
+    background: #fb641b;
+    color: white;
+}
+
+.buy-btn:hover {
+    background: #e65a16;
+}
+
+/* Wishlist Icon Positioning Overlay */
+.product-card .wishlist-btn-card {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    cursor: pointer;
+    color: #ff3f6c;
+}
+
+@media (max-width: 768px) {
+    .product-buttons {
+        flex-direction: column;
+    }
+}
