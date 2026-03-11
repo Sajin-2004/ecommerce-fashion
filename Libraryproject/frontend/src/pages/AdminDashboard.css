@@ -1,0 +1,183 @@
+.admin-container {
+    padding: 40px;
+    background: #f8f9fa;
+    min-height: 90vh;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-header h1 {
+    font-size: 28px;
+    color: #333;
+    margin: 0;
+}
+
+.admin-pill-btn {
+    background: #2874f0;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: 0.3s;
+}
+
+.admin-pill-btn:hover {
+    background: #1e62d0;
+    box-shadow: 0 4px 12px rgba(40, 116, 240, 0.2);
+}
+
+.admin-stats-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.admin-stats-card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.admin-stats-card p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 15px;
+    background: #fcfcfc;
+    border-bottom: 2px solid #eee;
+    font-weight: 600;
+    color: #444;
+}
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-table-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+/* Form Styles */
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.admin-form-grid input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.admin-form-grid input:focus {
+    border-color: #2874f0;
+    box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.1);
+    outline: none;
+}
+
+/* Badges & Pills */
+.status-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-pill.pending {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.status-pill.delivered {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-pill.cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.role-badge.admin {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.role-badge.user {
+    background: #f1f8e9;
+    color: #388e3c;
+}
+
+/* Buttons */
+.admin-action-btn {
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+.admin-action-btn.delete {
+    background: #fff5f5;
+    color: #ff4d4d;
+    border: 1px solid #ffe3e3;
+}
+
+.admin-action-btn.delete:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+.loader {
+    padding: 40px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+code {
+    background: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+}

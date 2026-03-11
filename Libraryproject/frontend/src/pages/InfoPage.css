@@ -1,0 +1,373 @@
+/* InfoPage.css — Shared styles for About, Careers, Contact, Privacy, Terms */
+
+.info-page-container {
+    background: #f1f3f6;
+    min-height: 100vh;
+    padding: 30px 20px 60px;
+}
+
+.info-page-card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Hero Banner */
+.info-page-hero {
+    background: linear-gradient(135deg, #1565c0 0%, #2874f0 100%);
+    color: #fff;
+    padding: 50px 40px;
+    text-align: center;
+}
+
+.info-page-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.info-page-hero h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.info-subtitle {
+    font-size: 16px;
+    opacity: 0.85;
+    margin: 0;
+}
+
+/* Content Body */
+.info-content {
+    padding: 36px 44px;
+}
+
+.info-content p {
+    font-size: 15px;
+    color: #424242;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.info-content h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #212121;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Icon List */
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+}
+
+.info-list li {
+    font-size: 15px;
+    color: #424242;
+    padding: 8px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+/* Mini Feature Cards */
+.info-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.info-mini-card {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: #fafafa;
+}
+
+.info-mini-card span {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.info-mini-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: #212121;
+}
+
+.info-mini-card p {
+    font-size: 13px;
+    color: #616161;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Highlight / CTA Box */
+.info-highlight-box {
+    background: #e8f4fd;
+    border-left: 4px solid #2874f0;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 24px 0;
+}
+
+.info-highlight-box h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212121;
+    margin: 0 0 10px;
+}
+
+.info-highlight-box p {
+    margin: 6px 0;
+}
+
+.info-email-link {
+    font-size: 15px;
+    color: #2874f0;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+.info-email-link:hover {
+    text-decoration: underline;
+}
+
+/* Back Button */
+.info-back-row {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.info-back-btn {
+    display: inline-block;
+    background: #2874f0;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.info-back-btn:hover {
+    background: #1a5abd;
+}
+
+/* ===== CAREERS =====  */
+.jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0 24px;
+}
+
+.job-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    padding: 16px 20px;
+    background: #fafafa;
+    gap: 16px;
+}
+
+.job-left h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212121;
+    margin: 0 0 4px;
+}
+
+.job-dept {
+    font-size: 13px;
+    color: #878787;
+}
+
+.job-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.job-tag {
+    background: #e8f5e9;
+    color: #388e3c;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.job-location {
+    font-size: 13px;
+    color: #616161;
+}
+
+/* ===== CONTACT =====  */
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 0;
+}
+
+.contact-info-col h2,
+.contact-form-col h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #212121;
+    margin: 0 0 20px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.contact-detail {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+    font-size: 24px;
+}
+
+.contact-detail>div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-detail strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212121;
+}
+
+.contact-detail span,
+.contact-detail a {
+    font-size: 14px;
+    color: #515151;
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+.contact-detail a:hover {
+    color: #2874f0;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #424242;
+}
+
+.contact-form-group input,
+.contact-form-group textarea {
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.contact-form-group input:focus,
+.contact-form-group textarea:focus {
+    border-color: #2874f0;
+}
+
+.contact-submit-btn {
+    padding: 12px;
+    background: #2874f0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0;
+    transition: background 0.2s;
+}
+
+.contact-submit-btn:hover {
+    background: #1a5abd;
+}
+
+/* ===== PRIVACY / TERMS =====  */
+.policy-section {
+    margin-bottom: 28px;
+}
+
+.policy-section h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #212121;
+    margin: 0 0 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 6px;
+}
+
+.policy-section p {
+    margin: 0;
+    font-size: 14px;
+    color: #515151;
+    line-height: 1.8;
+}
+
+/* ===== RESPONSIVE =====  */
+@media (max-width: 768px) {
+    .info-content {
+        padding: 24px 20px;
+    }
+
+    .info-page-hero {
+        padding: 36px 24px;
+    }
+
+    .info-cards-row {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .job-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .job-right {
+        align-items: flex-start;
+    }
+}
