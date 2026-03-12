@@ -1,61 +1,55 @@
 import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import CartItem from "../components/CartItem";
+import PriceSummary from "../components/PriceSummary";
+import "./CartPage.css";
 
-const CartPage = ({ setPage }) => {
+const CartPage = () => {
     const { cart, getCartTotal } = useContext(CartContext);
+    const navigate = useNavigate();
     const subtotal = getCartTotal();
-    const deliveryFee = subtotal > 0 ? 50 : 0;
-    const total = subtotal + deliveryFee;
+
+    if (cart.length === 0) {
+        return (
+            <div className="cart-page-container">
+                <div className="cart-layout">
+                    <div className="cart-items-section">
+                        <div className="empty-cart-container">
+                            <img
+                                src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+                                alt="Empty Cart"
+                                className="empty-cart-img"
+                            />
+                            <div className="empty-cart-text">Your cart is empty!</div>
+                            <span>Explore our categories and add some items.</span>
+                            <br />
+                            <Link to="/" className="shop-now-btn">Shop Now</Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="cart-page">
-            <h2>Shopping Cart</h2>
-
-            {cart.length === 0 ? (
-                <div style={{ textAlign: "center", marginTop: "50px" }}>
-                    <p>Your cart is empty.</p>
-                    <button onClick={() => setPage("home")}>Continue Shopping</button>
+        <div className="cart-page-container">
+            <div className="cart-layout">
+                {/* Left Section: Items */}
+                <div className="cart-items-section cart-card">
+                    <div className="cart-header">
+                        My Cart ({cart.length})
+                    </div>
+                    {cart.map((item) => (
+                        <CartItem key={item.productId} item={item} />
+                    ))}
                 </div>
-            ) : (
-                <>
-                    <div className="cart-items-list">
-                        {cart.map((item) => (
-                            <CartItem key={item.productId} item={item} />
-                        ))}
-                    </div>
 
-                    <div className="cart-summary">
-                        <div className="summary-row">
-                            <span>Subtotal:</span>
-                            <span>₹{subtotal}</span>
-                        </div>
-                        <div className="summary-row">
-                            <span>Delivery Fee:</span>
-                            <span>₹{deliveryFee}</span>
-                        </div>
-                        <div className="summary-row" style={{ borderTop: "1px solid #ddd", paddingTop: "10px" }}>
-                            <h2>Total:</h2>
-                            <h2>₹{total}</h2>
-                        </div>
-
-                        <div style={{ display: "flex", gap: "15px", justifyContent: "flex-end", marginTop: "20px" }}>
-                            <button
-                                onClick={() => setPage("home")}
-                                style={{ backgroundColor: "#f5f5f5", color: "#333", border: "1px solid #ccc" }}
-                            >
-                                Continue Shopping
-                            </button>
-                            <button
-                                className="order-btn"
-                                onClick={() => setPage("checkout")}
-                            >
-                                Buy Now
-                            </button>
-                        </div>
-                    </div>
-                </>
-            )}
+                {/* Right Section: Price Summary */}
+                <div className="cart-summary-section">
+                    <PriceSummary cart={cart} totalAmount={subtotal} />
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminDashboard.css";
+import { useNavigate } from "react-router-dom";
 
-function AdminDashboard({ setPage }) {
+function AdminDashboard() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -17,22 +19,22 @@ function AdminDashboard({ setPage }) {
             } catch (error) {
                 console.error("Error fetching users:", error);
                 if (error.response?.status === 401 || error.response?.status === 403) {
-                    setPage("adminLogin");
+                    navigate("/admin-login");
                 }
             } finally {
                 setLoading(false);
             }
         };
         fetchUsers();
-    }, [setPage]);
+    }, [navigate]);
 
     return (
         <div className="admin-container">
             <div className="admin-header">
                 <h1>Admin Command Center</h1>
                 <div className="admin-quick-actions">
-                    <button onClick={() => setPage("manageProducts")} className="admin-pill-btn">Add/Manage Products</button>
-                    <button onClick={() => setPage("manageOrders")} className="admin-pill-btn">Process Orders</button>
+                    <button onClick={() => navigate("/manage-products")} className="admin-pill-btn">Add/Manage Products</button>
+                    <button onClick={() => navigate("/manage-orders")} className="admin-pill-btn">Process Orders</button>
                 </div>
             </div>
 

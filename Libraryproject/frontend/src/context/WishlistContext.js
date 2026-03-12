@@ -48,14 +48,17 @@ export const WishlistProvider = ({ children }) => {
                 const payload = {
                     userId: user._id,
                     productId: product._id,
+                    name: product.name || product.title,
                     brand: product.brand,
                     category: product.category,
-                    type: product.type,
+                    subcategory: product.subcategory || product.type,
+                    type: product.type || product.subcategory, // Legacy
                     price: product.price,
                     image: product.image,
                     rating: product.rating
                 };
                 const res = await axios.post("http://localhost:5000/api/wishlist/add", payload);
+
                 setWishlist([...wishlist, res.data.item]);
             } catch (error) {
                 console.error("Error adding to wishlist:", error);

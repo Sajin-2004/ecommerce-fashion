@@ -8,7 +8,7 @@ const WishlistButton = ({ product }) => {
 
     return (
         <button
-            className="wishlist-btn-card"
+            className={`wishlist-btn-card ${isWishlisted ? "active" : ""}`}
             onClick={(e) => {
                 e.stopPropagation();
                 toggleWishlist(product);
@@ -17,6 +17,7 @@ const WishlistButton = ({ product }) => {
         >
             {isWishlisted ? "❤️" : "♡"}
         </button>
+
     );
 };
 

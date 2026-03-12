@@ -9,6 +9,7 @@ const Order = require("./models/order");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const uploadRoute = require("./routes/uploadRoute");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 
@@ -18,8 +19,10 @@ app.use(express.json());
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/admin/upload-products", uploadRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
+
 app.use("/api/wishlist", wishlistRoutes);
 
 

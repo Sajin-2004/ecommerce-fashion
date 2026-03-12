@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AdminDashboard.css";
+import { useNavigate } from "react-router-dom";
 
-function ManageOrders({ setPage }) {
+function ManageOrders() {
+    const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,7 +29,7 @@ function ManageOrders({ setPage }) {
         <div className="admin-container">
             <div className="admin-header">
                 <h1>Platform Transactions</h1>
-                <button onClick={() => setPage("adminDashboard")} className="admin-pill-btn">Back to Dashboard</button>
+                <button onClick={() => navigate("/admin-dashboard")} className="admin-pill-btn">Back to Dashboard</button>
             </div>
 
             <div className="admin-stats-card">

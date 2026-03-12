@@ -1,15 +1,26 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { CartContext } from "../context/CartContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import CheckoutAddress from "../components/CheckoutAddress";
+import CheckoutPayment from "../components/CheckoutPayment";
+import "./CheckoutPage.css";
+import "./CartPage.css"; // Reuse summary styles
 
-const CheckoutPage = ({ setPage, setShowPopup }) => {
-    const { cart, getCartTotal, clearCart } = useContext(CartContext);
-    const subtotal = getCartTotal();
-    const deliveryFee = subtotal > 0 ? 50 : 0;
-    const total = subtotal + deliveryFee;
+const CheckoutPage = ({ setShowPopup }) => {
+    const { cart, getCartTotal, clearCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        fullName: "",
+    const buyProduct = location.state?.buyProduct;
+    const [buyQuantity, setBuyQuantity] = useState(location.state?.quantity || 1);
+
+    const subtotal = buyProduct
+        ? buyProduct.price * buyQuantity
+        : getCartTotal();
+
+    const [address, setAddress] = useState({
+        name: "",
         phone: "",
         address: "",
         city: "",
@@ -17,112 +28,236 @@ const CheckoutPage = ({ setPage, setShowPopup }) => {
         pincode: ""
     });
 
-    const [paymentMethod, setPaymentMethod] = useState("COD");
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const isAddressValid = (addr) => {
+        return (
+            addr.name?.trim().length >= 3 &&
+            /^\d{10}$/.test(addr.phone) &&
+            addr.address?.trim().length >= 10 &&
+            addr.city?.trim().length > 0 &&
+            addr.state?.trim().length > 0 &&
+            /^\d{6}$/.test(addr.pincode)
+        );
     };
 
-    const placeOrder = async (e) => {
-        e.preventDefault();
+    const [selectedPayment, setSelectedPayment] = useState("cod");
+    const [activeStep, setActiveStep] = useState(1); // 1: Address, 2: Payment, 3: Summary
 
+    const itemsToDisplay = buyProduct
+        ? [{ ...buyProduct, productId: buyProduct._id, quantity: buyQuantity }]
+        : cart;
+
+    const totalItems = itemsToDisplay.reduce((acc, item) => acc + item.quantity, 0);
+    const totalMRP = Math.round(subtotal / 0.7);
+    const discount = totalMRP - subtotal;
+    const deliveryCharges = subtotal > 500 ? 0 : 40;
+    const finalAmount = subtotal + deliveryCharges;
+
+    const handlePlaceOrder = async () => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             const userId = user ? user._id : null;
 
+            const productsToOrder = itemsToDisplay.map(item => ({
+                productId: item.productId || item._id,
+                brand: item.brand,
+                price: item.price,
+                quantity: item.quantity
+            }));
+
             const orderPayload = {
                 userId,
-                products: cart.map(item => ({
-                    productId: item.productId,
-                    brand: item.brand,
-                    price: item.price,
-                    quantity: item.quantity
-                })),
-                totalPrice: total,
-                address: formData,
-                paymentMethod,
-                orderDate: new Date()
+                products: productsToOrder,
+                totalPrice: finalAmount,
+                address: address,
+                paymentMethod: selectedPayment.toUpperCase(),
             };
 
-            // Call the new v2 API
-            await axios.post("http://localhost:5000/api/orders/v2/create", orderPayload);
+            const res = await axios.post("http://localhost:5000/api/orders/create", orderPayload);
 
-            setShowPopup(true);
-            clearCart();
-            setPage("home");
+            if (res.status === 201 || res.data.message) {
+                setShowPopup(true);
+                if (!buyProduct) clearCart();
+                navigate("/");
+            }
         } catch (err) {
-            console.error("Order error:", err);
+            console.error("Order error:", err.response?.data || err.message);
             alert("Error placing order. Please try again.");
         }
     };
 
-    if (cart.length === 0) {
-        return <div className="checkout-container"><h2>Your cart is empty</h2><button onClick={() => setPage("home")}>Go Shopping</button></div>;
+    const handleRemoveItem = (productId) => {
+        if (buyProduct) {
+            navigate("/cart");
+        } else {
+            removeFromCart(productId);
+            if (cart.length === 1) {
+                navigate("/cart");
+            }
+        }
+    };
+
+    const handleIncrease = (productId) => {
+        if (buyProduct) {
+            setBuyQuantity(prev => prev + 1);
+        } else {
+            increaseQuantity(productId);
+        }
+    };
+
+    const handleDecrease = (productId) => {
+        if (buyProduct) {
+            if (buyQuantity > 1) setBuyQuantity(prev => prev - 1);
+        } else {
+            decreaseQuantity(productId);
+        }
+    };
+
+    if (!buyProduct && cart.length === 0) {
+        navigate("/cart");
+        return null;
     }
 
     return (
-        <div className="checkout-container" style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
-            <div style={{ flex: 2, minWidth: "300px" }}>
-                <h2>1️⃣ Delivery Address</h2>
-                <form onSubmit={placeOrder} className="auth-form" style={{ marginTop: "20px" }}>
-                    <input type="text" name="fullName" placeholder="Full Name" required onChange={handleChange} />
-                    <input type="text" name="phone" placeholder="Phone" required onChange={handleChange} />
-                    <textarea
-                        name="address"
-                        placeholder="Address"
-                        required
-                        onChange={handleChange}
-                        style={{ padding: "10px", borderRadius: "4px", border: "1px solid #ccc", minHeight: "80px" }}
-                    ></textarea>
-                    <div style={{ display: "flex", gap: "10px" }}>
-                        <input type="text" name="city" placeholder="City" required onChange={handleChange} style={{ flex: 1 }} />
-                        <input type="text" name="state" placeholder="State" required onChange={handleChange} style={{ flex: 1 }} />
-                    </div>
-                    <input type="text" name="pincode" placeholder="Pincode" required onChange={handleChange} />
-
-                    <h2 style={{ marginTop: "30px" }}>3️⃣ Payment Method</h2>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "10px", margin: "15px 0" }}>
-                        <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                            <input type="radio" value="COD" checked={paymentMethod === "COD"} onChange={(e) => setPaymentMethod(e.target.value)} />
-                            Cash on Delivery
-                        </label>
-                        <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                            <input type="radio" value="UPI" checked={paymentMethod === "UPI"} onChange={(e) => setPaymentMethod(e.target.value)} />
-                            UPI
-                        </label>
-                        <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                            <input type="radio" value="Card" checked={paymentMethod === "Card"} onChange={(e) => setPaymentMethod(e.target.value)} />
-                            Card
-                        </label>
-                    </div>
-
-                    <button type="submit" className="order-btn" style={{ width: "100%", padding: "15px", fontSize: "18px" }}>
-                        Place Order
-                    </button>
-                </form>
-            </div>
-
-            <div style={{ flex: 1, minWidth: "250px", backgroundColor: "#f9f9f9", padding: "20px", borderRadius: "8px", height: "fit-content" }}>
-                <h2>2️⃣ Order Summary</h2>
-                <div style={{ marginTop: "20px" }}>
-                    {cart.map((item) => (
-                        <div key={item.productId} style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                            <span>{item.brand} (x{item.quantity})</span>
-                            <span>₹{item.price * item.quantity}</span>
+        <div className="checkout-page-container">
+            <div className="checkout-layout">
+                {/* Left: Steps Section */}
+                <div className="checkout-steps-section">
+                    
+                    {/* Step 1: Delivery Address */}
+                    <div className="checkout-step-card shadow-card">
+                        <div className={`step-header ${activeStep !== 1 ? 'inactive' : ''}`}>
+                            <span className="step-number">1</span>
+                            DELIVERY ADDRESS
                         </div>
-                    ))}
-                    <hr />
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                        <span>Subtotal:</span>
-                        <span>₹{subtotal}</span>
+                        {activeStep === 1 && (
+                            <div className="step-content">
+                                <CheckoutAddress
+                                    address={address}
+                                    setAddress={setAddress}
+                                    onSave={() => setActiveStep(2)}
+                                />
+                            </div>
+                        )}
+                        {activeStep > 1 && (
+                            <div className="step-content saved-info">
+                                <div className="saved-address-details">
+                                    <div className="user-name">{address.name} <span className="user-phone">{address.phone}</span></div>
+                                    <div className="address-text">{address.address}, {address.city} - {address.pincode} ({address.state})</div>
+                                </div>
+                                <button onClick={() => setActiveStep(1)} className="change-btn">CHANGE</button>
+                            </div>
+                        )}
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "5px" }}>
-                        <span>Delivery:</span>
-                        <span>₹{deliveryFee}</span>
+
+                    {/* Step 2: Payment Options */}
+                    <div className="checkout-step-card shadow-card">
+                        <div className={`step-header ${activeStep !== 2 ? 'inactive' : ''}`}>
+                            <span className="step-number">2</span>
+                            PAYMENT OPTIONS
+                        </div>
+                        {activeStep === 2 && (
+                            <div className="step-content">
+                                <CheckoutPayment
+                                    selectedMethod={selectedPayment}
+                                    setSelectedMethod={setSelectedPayment}
+                                />
+                                <button className="continue-checkout-btn" onClick={() => setActiveStep(3)}>
+                                    CONTINUE TO SUMMARY
+                                </button>
+                            </div>
+                        )}
+                        {activeStep > 2 && (
+                            <div className="step-content saved-info">
+                                <div className="payment-method-label">Payment Method: <strong>{selectedPayment.toUpperCase()}</strong></div>
+                                <button onClick={() => setActiveStep(2)} className="change-btn">CHANGE</button>
+                            </div>
+                        )}
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "15px", fontWeight: "bold", fontSize: "1.2rem", color: "#2874f0" }}>
-                        <span>Total:</span>
-                        <span>₹{total}</span>
+
+                    {/* Step 3: Order Summary (Items List) */}
+                    <div className="checkout-step-card shadow-card">
+                        <div className={`step-header ${activeStep !== 3 ? 'inactive' : ''}`}>
+                            <span className="step-number">3</span>
+                            ORDER SUMMARY
+                        </div>
+                        {activeStep === 3 && (
+                            <div className="step-content">
+                                <div className="items-summary-list">
+                                    {itemsToDisplay.map((item) => (
+                                        <div key={item.productId} className="checkout-summary-item-card">
+                                            <div className="item-thumbnail">
+                                                <img src={item.image} alt={item.name} />
+                                            </div>
+                                            <div className="item-details-box">
+                                                <div className="item-header-row">
+                                                    <h4 className="item-brand-name">{item.brand}</h4>
+                                                    <button className="remove-item-icon-btn" onClick={() => handleRemoveItem(item.productId)}>
+                                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <p className="item-full-name">{item.name}</p>
+                                                <div className="item-pricing-row">
+                                                    <span className="item-current-price">₹{item.price.toLocaleString()}</span>
+                                                    <span className="item-old-price">₹{Math.round(item.price / 0.7).toLocaleString()}</span>
+                                                </div>
+                                                
+                                                <div className="qty-management">
+                                                    <button className="qty-btn" onClick={() => handleDecrease(item.productId)} disabled={item.quantity <= 1}>-</button>
+                                                    <span className="qty-display-value">{item.quantity}</span>
+                                                    <button className="qty-btn" onClick={() => handleIncrease(item.productId)}>+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Mobile-only Total Summary before button */}
+                                <div className="mobile-total-summary">
+                                    <div className="total-label">Total Amount:</div>
+                                    <div className="total-value">₹{finalAmount.toLocaleString()}</div>
+                                </div>
+
+                                <button 
+                                    className="place-order-final-btn" 
+                                    onClick={handlePlaceOrder}
+                                    disabled={!isAddressValid(address)}
+                                    style={{ opacity: !isAddressValid(address) ? 0.6 : 1, cursor: !isAddressValid(address) ? 'not-allowed' : 'pointer' }}
+                                >
+                                    PLACE ORDER
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Right: Price Details (Desktop only or at bottom on mobile) */}
+                <div className="cart-summary-section">
+                    <div className="cart-card price-summary-card shadow-card">
+                        <div className="summary-header">PRICE DETAILS</div>
+                        <div className="summary-body">
+                            <div className="price-item">
+                                <span>Subtotal ({totalItems} items)</span>
+                                <span>₹{subtotal.toLocaleString()}</span>
+                            </div>
+                            <div className="price-item">
+                                <span>Shipping</span>
+                                <span>{deliveryCharges === 0 ? <span className="free-text">FREE</span> : `₹${deliveryCharges}`}</span>
+                            </div>
+
+                            <div className="price-item total-payable">
+                                <span>Total Amount</span>
+                                <span>₹{finalAmount.toLocaleString()}</span>
+                            </div>
+                            
+                            <p className="savings-highlight">You are saving ₹{discount.toLocaleString()} with our best offers!</p>
+                        </div>
+                    </div>
+                    
+                    <div className="checkout-trust-info">
+                        <p>Safe and Secure Payments. 100% Authentic products.</p>
                     </div>
                 </div>
             </div>

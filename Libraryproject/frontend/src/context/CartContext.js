@@ -15,14 +15,14 @@ export const CartProvider = ({ children }) => {
     }, [cart]);
 
     // Method to add items (accumulates quantity natively)
-    const addToCart = (product) => {
+    const addToCart = (product, qty = 1) => {
         setCart((prev) => {
             const exists = prev.find((item) => item.productId === (product.productId || product._id));
             if (exists) {
                 // Increment quantity
                 return prev.map((item) =>
                     item.productId === exists.productId
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: item.quantity + qty }
                         : item
                 );
             } else {
@@ -31,17 +31,21 @@ export const CartProvider = ({ children }) => {
                     ...prev,
                     {
                         productId: product._id || product.productId,
+                        name: product.name || product.title,
                         brand: product.brand,
                         category: product.category,
-                        type: product.type,
+                        subcategory: product.subcategory || product.type,
+                        type: product.type || product.subcategory, // Legacy
                         price: product.price,
                         image: product.image,
-                        quantity: 1
+                        quantity: qty
                     }
+
                 ];
             }
         });
     };
+
 
     // Method to remove items entirely
     const removeFromCart = (productId) => {

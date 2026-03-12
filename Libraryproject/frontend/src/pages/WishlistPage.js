@@ -1,117 +1,86 @@
-import React, { useContext } from "react";
-import { WishlistContext } from "../context/WishlistContext";
-import { CartContext } from "../context/CartContext";
-import "./WishlistPage.css";
+import React, { useContext } from 'react';
+import { WishlistContext } from '../context/WishlistContext';
+import { CartContext } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
-const WishlistPage = ({ setPage }) => {
+function WishlistPage() {
     const { wishlist, toggleWishlist } = useContext(WishlistContext);
     const { addToCart } = useContext(CartContext);
+    const navigate = useNavigate();
 
     return (
-        <div className="wishlist-container" style={{ padding: "40px", maxWidth: "1200px", margin: "auto" }}>
-            <div className="wishlist-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
-                <h1 style={{ fontWeight: "800", color: "#212121" }}>My Wishlist ({wishlist.length})</h1>
-                <button
-                    className="back-shopping-btn"
-                    onClick={() => setPage("home")}
-                    style={{
-                        padding: "10px 20px",
-                        backgroundColor: "#2874f0",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "8px",
-                        fontWeight: "600",
-                        cursor: "pointer"
-                    }}
-                >
-                    Continue Shopping
-                </button>
-            </div>
+        <div className="wishlist-page-container">
+            <div className="wishlist-wrapper">
+                <header className="wishlist-header-section">
+                    <h1 className="wishlist-title">My Wishlist</h1>
+                    <p className="items-count-text">{wishlist.length} Items Saved</p>
+                </header>
 
-            {wishlist.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "80px 20px", backgroundColor: "#fff", borderRadius: "12px", border: "1px solid #e0e0e0" }}>
-                    <div style={{ fontSize: "80px", marginBottom: "20px" }}>❤️</div>
-                    <h2 style={{ color: "#212121", marginBottom: "10px" }}>Your wishlist is empty</h2>
-                    <p style={{ color: "#757575", marginBottom: "30px" }}>Keep track of items you love by clicking the heart icon!</p>
-                    <button
-                        className="go-home-btn"
-                        onClick={() => setPage("home")}
-                        style={{
-                            padding: "12px 30px",
-                            backgroundColor: "#2874f0",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "8px",
-                            fontWeight: "700",
-                            cursor: "pointer",
-                            fontSize: "16px"
-                        }}
-                    >
-                        Explore Products
-                    </button>
-                </div>
-            ) : (
-                <div className="products-grid">
-                    {wishlist.map((item) => (
-                        <div key={item._id} className="product-card" style={{ position: "relative", padding: "20px", background: "#fff", borderRadius: "12px", border: "1px solid #e0e0e0", transition: "all 0.3s" }}>
-                            <button
-                                className="remove-wishlist-btn"
-                                onClick={() => toggleWishlist(item)}
-                                style={{
-                                    position: "absolute",
-                                    top: "10px",
-                                    right: "10px",
-                                    background: "#f5f5f5",
-                                    border: "none",
-                                    borderRadius: "50%",
-                                    width: "30px",
-                                    height: "30px",
-                                    cursor: "pointer",
-                                    zIndex: 5,
-                                    fontSize: "18px",
-                                    color: "#757575",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}
-                                title="Remove from Wishlist"
-                            >
-                                ✕
-                            </button>
-
-                            <div style={{ height: "200px", overflow: "hidden", borderRadius: "8px", marginBottom: "15px" }}>
-                                <img src={item.image} alt={item.brand} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                            </div>
-
-                            <h3 style={{ fontSize: "16px", fontWeight: "700", margin: "5px 0" }}>{item.brand}</h3>
-                            <p style={{ fontSize: "13px", color: "#757575", marginBottom: "10px" }}>
-                                {item.type} {item.category}
-                            </p>
-                            <h2 style={{ fontSize: "20px", fontWeight: "800", marginBottom: "15px" }}>₹{item.price}</h2>
-
-                            <button
-                                className="cart-btn"
-                                onClick={() => addToCart(item)}
-                                style={{
-                                    width: "100%",
-                                    padding: "10px",
-                                    backgroundColor: "#ff9f00",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: "8px",
-                                    fontWeight: "600",
-                                    cursor: "pointer"
-                                }}
-                            >
-                                Add To Cart
-                            </button>
+                {wishlist.length === 0 ? (
+                    <div className="empty-wishlist-state">
+                        <div className="empty-wishlist-icon">
+                            <svg viewBox="0 0 24 24" width="80" height="80" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
                         </div>
-                    ))}
-                </div>
-            )}
+                        <h2>Your wishlist is empty</h2>
+                        <p>Items added to your wishlist will appear here.</p>
+                        <button onClick={() => navigate("/")} className="explore-btn">
+                            Explore Products
+                        </button>
+                    </div>
+                ) : (
+                    <div className="wishlist-items-list">
+                        {wishlist.map((item) => (
+                            <div key={item.productId} className="wishlist-card">
+                                {/* Left Section: Image (30%) */}
+                                <div className="wishlist-card-image">
+                                    <div className="image-zoom-wrapper">
+                                        <img src={item.image} alt={item.name || item.brand} />
+                                    </div>
+                                </div>
+
+                                {/* Middle Section: Info (45%) */}
+                                <div className="wishlist-card-info">
+                                    <p className="item-category">{item.category || item.subcategory}</p>
+                                    <h3 className="item-name">{item.name || item.title}</h3>
+                                    
+                                    <div className="item-rating">
+                                        {[...Array(5)].map((_, i) => (
+                                            <span key={i} className={`star ${i < 4 ? 'filled' : ''}`}>★</span>
+                                        ))}
+                                        <span className="rating-count">(4.2)</span>
+                                    </div>
+
+                                    <div className="item-price-section">
+                                        <span className="offer-price">₹{item.price}</span>
+                                        <span className="original-price">₹{Math.round(item.price / 0.7)}</span>
+                                        <span className="discount-badge">30% OFF</span>
+                                    </div>
+                                </div>
+
+                                {/* Right Section: Actions (25%) */}
+                                <div className="wishlist-card-actions">
+                                    <button
+                                        className="move-to-cart-premium"
+                                        onClick={() => addToCart({ ...item, _id: item.productId })}
+                                    >
+                                        Move to Cart
+                                    </button>
+                                    <button
+                                        className="remove-wishlist-premium"
+                                        onClick={() => toggleWishlist({ ...item, _id: item.productId })}
+                                    >
+                                        <span className="btn-icon">🗑</span> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
-};
+}
 
 export default WishlistPage;
-

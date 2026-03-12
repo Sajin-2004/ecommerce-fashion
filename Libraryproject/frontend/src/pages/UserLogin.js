@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function UserLogin({ setPage }) {
+function UserLogin() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
 
@@ -15,7 +17,8 @@ function UserLogin({ setPage }) {
             const res = await axios.post("http://localhost:5000/api/auth/login", formData);
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
-            setPage("home");
+            navigate("/");
+            window.location.reload();
         } catch (err) {
             setError(err.response?.data?.message || err.response?.data?.error || "Login failed");
         }
@@ -30,7 +33,7 @@ function UserLogin({ setPage }) {
                 <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
                 <button type="submit" className="auth-btn">Login</button>
             </form>
-            <p>Don't have an account? <span onClick={() => setPage("userRegister")} className="link">Register</span></p>
+            <p>Don't have an account? <span onClick={() => navigate("/signup")} className="link">Signup</span></p>
         </div>
     );
 }

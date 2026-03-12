@@ -1,0 +1,67 @@
+/* Home.css */
+.home-container {
+    background-color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.products-section {
+    max-width: 1400px;
+    margin: 100px auto;
+    padding: 0 40px;
+}
+
+.products-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    border-radius: 4px 4px 0 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h3 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 20px;
+    color: #1a1a1a;
+}
+
+.section-header h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #000;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 30px;
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    .products-section {
+        padding: 0 20px;
+        margin: 50px auto;
+    }
+    .section-header h3 {
+        font-size: 28px;
+    }
+}

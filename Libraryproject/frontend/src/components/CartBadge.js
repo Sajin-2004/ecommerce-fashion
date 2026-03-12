@@ -8,7 +8,7 @@ const CartBadge = () => {
     if (count === 0) return null;
 
     return (
-        <span style={{ fontSize: "14px", marginLeft: "4px", color: "#444" }}>({count})</span>
+        <span className="badge">{count}</span>
     );
 };
 

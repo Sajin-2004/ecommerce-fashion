@@ -6,12 +6,11 @@ const WishlistIcon = () => {
     const count = getWishlistCount();
 
     return (
-        <div className="nav-icon-wrapper" style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <span className="nav-icon-main">❤️</span>
-            {count > 0 && <span className="wishlist-count" style={{ fontSize: "14px", fontWeight: "bold" }}>({count})</span>}
+        <div className="icon-wrapper">
+            <span className="nav-icon">❤️</span>
+            {count > 0 && <span className="badge">{count}</span>}
         </div>
     );
 };
 
 export default WishlistIcon;
-

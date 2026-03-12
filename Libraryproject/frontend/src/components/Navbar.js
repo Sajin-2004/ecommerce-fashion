@@ -1,156 +1,245 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
 import "./Navbar.css";
 import CartBadge from "./CartBadge";
 import WishlistIcon from "./WishlistIcon";
+import { useNavigate, Link } from "react-router-dom";
+import { FaChevronDown } from "react-icons/fa";
+import { FiUser, FiPackage, FiLogOut, FiHeart } from "react-icons/fi";
 
-function Navbar({ setProducts, fetchProducts, setPage }) {
+function Navbar({ allProducts, setProducts, fetchProducts }) {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
+    const [accountOpen, setAccountOpen] = useState(false);
+    const [categoriesOpen, setCategoriesOpen] = useState(false);
+    const [activeCategory, setActiveCategory] = useState(null); // Track for mobile submenu
+    const dropdownRef = useRef(null);
 
     const user = JSON.parse(localStorage.getItem("user"));
     const isAdmin = user && user.role === "admin";
 
-    // ✅ LIVE SEARCH FILTER
+    // Close dropdowns when clicking outside (for mobile/click-based)
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            if (searchQuery) {
-                handleLiveSearch();
-            } else {
-                fetchProducts();
+        const handleClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setAccountOpen(false);
+                setCategoriesOpen(false);
+                setActiveCategory(null);
             }
-        }, 300);
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        const query = value.toLowerCase();
 
-    const handleLiveSearch = async () => {
-        try {
-            const res = await axios.get(`http://localhost:5000/api/products/search/${searchQuery}`);
-            setProducts(res.data);
-        } catch (err) {
-            console.error("Search error:", err);
+        if (query.trim() === "") {
+            setProducts(allProducts);
+        } else {
+            const filtered = allProducts.filter((product) =>
+                (product.name && product.name.toLowerCase().includes(query)) ||
+                (product.title && product.title.toLowerCase().includes(query)) ||
+                (product.brand && product.brand.toLowerCase().includes(query))
+            );
+            setProducts(filtered);
         }
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            handleLiveSearch();
+        if (e.key === "Enter" && searchQuery.trim() !== "") {
+            navigate(`/search?q=${searchQuery}`);
         }
     };
 
-    const handleCategory = async (type, category) => {
-        try {
-            const res = await axios.get(`http://localhost:5000/api/products/filter/${type}/${category}`);
-            setProducts(res.data);
-            setPage("home");
-        } catch (err) {
-            console.error(err);
+    const handleCategory = (type, category) => {
+        setCategoriesOpen(false);
+        setActiveCategory(null);
+        navigate(`/products?category=${type}&subcategory=${category}`);
+    };
+
+    const toggleCategories = () => {
+        if (window.innerWidth <= 768) {
+            setCategoriesOpen(!categoriesOpen);
+            setActiveCategory(null);
+        }
+    };
+
+    const toggleSubCategory = (category) => {
+        if (window.innerWidth <= 768) {
+            setActiveCategory(activeCategory === category ? null : category);
         }
     };
 
     const goHome = () => {
         setSearchQuery("");
         fetchProducts();
-        setPage("home");
+        navigate("/");
     };
 
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        setPage("home");
+        navigate("/");
         window.location.reload();
     };
 
+    const handleDropdownLink = (path) => {
+        setAccountOpen(false);
+        navigate(path);
+    };
+
     return (
-        <nav className="navbar">
-            {/* ROW 1: Logo & Slogan */}
-            <div className="nav-top">
-                <div className="nav-top-left" onClick={() => { fetchProducts(); setPage("home"); }} style={{ cursor: "pointer" }}>
-                    <h1 className="logo">FashionHub</h1>
-                    <span className="slogan">Shopping brings you happiness</span>
-                </div>
-            </div>
-
-            {/* ROW 2: Menu, Search, Icons */}
-            <div className="nav-bottom">
-                <div className="nav-bottom-left">
-                    <button className="nav-home-btn" onClick={goHome} title="Home Page">
-                        🏠
-                    </button>
-                    {!isAdmin && (
-                        <>
-                            <div className="nav-dropdown">
-                                <button className="nav-dropbtn">Mens ▼</button>
-                                <div className="nav-dropdown-content">
-                                    <p onClick={() => handleCategory("mens", "shirts")}>Shirts</p>
-                                    <p onClick={() => handleCategory("mens", "pants")}>Pants</p>
-                                    <p onClick={() => handleCategory("mens", "tshirts")}>Tshirts</p>
-                                </div>
-                            </div>
-                            <div className="nav-dropdown">
-                                <button className="nav-dropbtn">Kids ▼</button>
-                                <div className="nav-dropdown-content">
-                                    <p onClick={() => handleCategory("kids", "shirts")}>Shirts</p>
-                                    <p onClick={() => handleCategory("kids", "pants")}>Pants</p>
-                                    <p onClick={() => handleCategory("kids", "tshirts")}>Tshirts</p>
-                                </div>
-                            </div>
-                        </>
-                    )}
+        <nav className="navbar" ref={dropdownRef}>
+            <div className="nav-container">
+                {/* Logo */}
+                <div className="nav-logo-container" onClick={goHome}>
+                    <h1 className="premium-logo">FASHION<span>HUB</span></h1>
                 </div>
 
-                <div className="nav-bottom-center">
+                {/* Search Bar */}
+                <div className="nav-search-container">
                     <input
                         type="text"
-                        placeholder="Search for brands, categories, or products..."
+                        placeholder="Search for products, brands and more"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={handleSearch}
                         onKeyDown={handleKeyDown}
                     />
                 </div>
 
-                <div className="nav-bottom-right">
-                    <div className="user-icon-container" title="Profile">
-                        <span className="nav-icon-main">👤</span>
-                        <div className="user-dropdown">
-                            {user ? (
-                                <>
-                                    <p style={{ fontWeight: "bold", borderBottom: "2px solid #eee" }}>Hi, {user.name}</p>
-                                    {!isAdmin && <p onClick={() => setPage("orders")}>My Orders</p>}
-                                    {isAdmin && (
-                                        <>
-                                            <p onClick={() => setPage("adminDashboard")}>Dashboard</p>
-                                            <p onClick={() => setPage("manageProducts")}>Products</p>
-                                            <p onClick={() => setPage("manageOrders")}>Orders</p>
-                                        </>
-                                    )}
-                                    <p onClick={logout} style={{ color: "red" }}>Logout</p>
-                                </>
-                            ) : (
-                                <>
-                                    <p onClick={() => setPage("userLogin")}>Login</p>
-                                    <p onClick={() => setPage("userRegister")}>Sign Up</p>
-                                    <hr />
-                                    <p onClick={() => setPage("adminLogin")} style={{ fontSize: "12px", color: "gray" }}>Admin Portal</p>
-                                </>
-                            )}
-                        </div>
-                    </div>
-
+                {/* Nav Actions */}
+                <div className="nav-actions">
+                    {/* Categories Dropdown */}
                     {!isAdmin && (
-                        <>
-                            <div className="nav-icon-container" onClick={() => setPage("cart")} title="Cart" style={{ position: 'relative', cursor: 'pointer', fontSize: '20px' }}>
-                                <span>🛒</span>
-                                <CartBadge />
-                            </div>
+                        <div 
+                            className={`nav-dropdown-wrapper ${categoriesOpen ? 'active' : ''}`}
+                            onMouseEnter={() => window.innerWidth > 768 && setCategoriesOpen(true)}
+                            onMouseLeave={() => window.innerWidth > 768 && setCategoriesOpen(false)}
+                        >
+                            <button 
+                                className="nav-dropbtn-premium"
+                                onClick={toggleCategories}
+                            >
+                                Categories <FaChevronDown className={`arrow-icon ${categoriesOpen ? 'rotate' : ''}`} />
+                            </button>
+                            <div className={`nav-dropdown-content-premium ${categoriesOpen ? 'show' : ''}`}>
+                                <div className="multi-level-menu">
+                                    {/* MEN */}
+                                    <div 
+                                        className={`menu-item-with-submenu ${activeCategory === 'men' ? 'expanded' : ''}`}
+                                        onMouseEnter={() => window.innerWidth > 768 && setActiveCategory('men')}
+                                        onMouseLeave={() => window.innerWidth > 768 && setActiveCategory(null)}
+                                        onClick={() => toggleSubCategory('men')}
+                                    >
+                                        <div className="menu-label">
+                                            MEN <span className="submenu-arrow">▶</span>
+                                        </div>
+                                        <div className="submenu-content">
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("mens", "shirts"); }}>Shirts</p>
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("mens", "tshirts"); }}>T-Shirts</p>
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("mens", "pants"); }}>Pants</p>
+                                        </div>
+                                    </div>
 
-                            <div className="nav-icon-container" onClick={() => setPage("wishlist")} title="Wishlist" style={{ position: 'relative', cursor: 'pointer', fontSize: '20px' }}>
-                                <WishlistIcon />
+                                    {/* KIDS */}
+                                    <div 
+                                        className={`menu-item-with-submenu ${activeCategory === 'kids' ? 'expanded' : ''}`}
+                                        onMouseEnter={() => window.innerWidth > 768 && setActiveCategory('kids')}
+                                        onMouseLeave={() => window.innerWidth > 768 && setActiveCategory(null)}
+                                        onClick={() => toggleSubCategory('kids')}
+                                    >
+                                        <div className="menu-label">
+                                            KIDS <span className="submenu-arrow">▶</span>
+                                        </div>
+                                        <div className="submenu-content">
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("kids", "shirts"); }}>Kids Shirts</p>
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("kids", "tshirts"); }}>Kids T-Shirts</p>
+                                            <p onClick={(e) => { e.stopPropagation(); handleCategory("kids", "pants"); }}>Kids Pants</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </>
+                        </div>
                     )}
-                </div>
 
+                    <div className="nav-right">
+                        {/* Account Dropdown */}
+                        <div 
+                            className={`nav-item account-dropdown-premium ${accountOpen ? 'active' : ''}`}
+                            ref={dropdownRef}
+                            onMouseEnter={() => window.innerWidth > 768 && setAccountOpen(true)}
+                            onMouseLeave={() => window.innerWidth > 768 && setAccountOpen(false)}
+                        >
+                            <div
+                                className="account-toggle-premium"
+                                onClick={() => window.innerWidth <= 768 && setAccountOpen(!accountOpen)}
+                            >
+                                <span className="user-greeting">Hello, {user ? user.name : 'Sign in'}</span>
+                                <span className="account-text">
+                                    Account <FaChevronDown className={`arrow-icon ${accountOpen ? 'rotate' : ''}`} />
+                                </span>
+                            </div>
+
+                            <div className={`user-dropdown-content-premium ${accountOpen ? 'show' : ''}`}>
+                                {user ? (
+                                    <>
+                                        <div className="user-header">
+                                            <p>Hi, {user.name}</p>
+                                        </div>
+                                        <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/profile")}>
+                                            <FiUser className="dropdown-icon" /> My Profile
+                                        </p>
+                                        {!isAdmin && (
+                                            <>
+                                                <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/orders")}>
+                                                    <FiPackage className="dropdown-icon" /> Orders
+                                                </p>
+                                                <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/wishlist")}>
+                                                    <FiHeart className="dropdown-icon" /> Wishlist
+                                                </p>
+                                            </>
+                                        )}
+                                        {isAdmin && (
+                                            <>
+                                                <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/adminDashboard")}>Dashboard</p>
+                                                <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/manage-products")}>Products</p>
+                                                <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/manage-orders")}>Orders</p>
+                                            </>
+                                        )}
+                                        <p onClick={logout} className="logout-btn-premium">
+                                            <FiLogOut className="dropdown-icon" /> Logout
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/login")}>Login</p>
+                                        <p className="dropdown-link-premium" onClick={() => handleDropdownLink("/signup")}>Sign Up</p>
+                                        <div className="admin-portal-divider">
+                                            <p className="admin-link-premium" onClick={() => handleDropdownLink("/adminLogin")}>Admin Portal</p>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {!isAdmin && (
+                            <>
+                                <Link to="/wishlist" className="nav-item-premium">
+                                    <WishlistIcon />
+                                </Link>
+
+                                <Link to="/cart" className="nav-item-premium">
+                                    <div className="icon-wrapper">
+                                        <span className="nav-icon">🛒</span>
+                                        <CartBadge />
+                                    </div>
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         </nav>
     );

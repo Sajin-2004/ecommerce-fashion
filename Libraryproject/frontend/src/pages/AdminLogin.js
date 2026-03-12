@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function AdminLogin({ setPage }) {
+function AdminLogin() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
 
@@ -15,7 +17,7 @@ function AdminLogin({ setPage }) {
             const res = await axios.post("http://localhost:5000/api/admin/login", formData);
             localStorage.setItem("adminToken", res.data.token);
             localStorage.setItem("adminUser", JSON.stringify(res.data.user));
-            setPage("adminDashboard");
+            navigate("/admin-dashboard");
         } catch (err) {
             setError(err.response?.data?.message || err.response?.data?.error || "Admin Login failed");
         }
