@@ -4,7 +4,7 @@ import CartBadge from "./CartBadge";
 import WishlistIcon from "./WishlistIcon";
 import { useNavigate, Link } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
-import { FiUser, FiPackage, FiLogOut, FiHeart } from "react-icons/fi";
+import { FiUser, FiPackage, FiLogOut, FiHeart, FiShoppingCart } from "react-icons/fi";
 
 function Navbar({ allProducts, setProducts, fetchProducts }) {
     const navigate = useNavigate();
@@ -209,7 +209,7 @@ function Navbar({ allProducts, setProducts, fetchProducts }) {
                                             </>
                                         )}
                                         <p onClick={logout} className="logout-btn-premium">
-                                            <FiLogOut className="dropdown-icon" /> Logout
+                                            <FiLogOut color="red" className="dropdown-icon" /> Logout
                                         </p>
                                     </>
                                 ) : (
@@ -227,12 +227,12 @@ function Navbar({ allProducts, setProducts, fetchProducts }) {
                         {!isAdmin && (
                             <>
                                 <Link to="/wishlist" className="nav-item-premium">
-                                    <WishlistIcon />
+                                    <FiHeart className="dropdown-icon fs-1" />
                                 </Link>
 
                                 <Link to="/cart" className="nav-item-premium">
                                     <div className="icon-wrapper">
-                                        <span className="nav-icon">🛒</span>
+                                        <FiShoppingCart size={20} color="black" className="cart-icon" />
                                         <CartBadge />
                                     </div>
                                 </Link>

@@ -7,6 +7,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import OrderSuccessModal from "./components/OrderSuccessModal";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import Home from "./pages/Home";
@@ -16,6 +17,7 @@ import OrdersPage from "./pages/OrdersPage";
 import WishlistPage from "./pages/WishlistPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import OrderSuccess from "./pages/OrderSuccess";
 
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -62,6 +64,7 @@ function App() {
                         setProducts={setProducts}
                         fetchProducts={fetchProducts}
                     />
+                    <ScrollToTop />
 
                     <Routes>
                         <Route path="/" element={<Home products={products} fetchProducts={fetchProducts} />} />
@@ -72,6 +75,7 @@ function App() {
                         <Route path="/product/:id" element={<ProductDetails />} />
                         <Route path="/search" element={<SearchResults />} />
                         <Route path="/products" element={<ProductsPage />} />
+                        <Route path="/order-success" element={<OrderSuccess />} />
 
                         {/* Auth & Admin */}
                         <Route path="/login" element={<Login />} />

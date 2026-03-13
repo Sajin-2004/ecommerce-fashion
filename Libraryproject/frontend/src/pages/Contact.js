@@ -1,96 +1,166 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './InfoPage.css';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock, FaCheckCircle } from 'react-icons/fa';
+import './Contact.css';
 
 const Contact = () => {
-    const [form, setForm] = useState({ name: '', email: '', message: '' });
-    const [submitted, setSubmitted] = useState(false);
+    const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        setLoading(true);
+        setError('');
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setShowSuccessPopup(true);
+            } else {
+                setError(data.message || 'Failed to send message');
+            }
+        } catch (err) {
+            const errorMsg = 'Something went wrong. Please try again later.';
+            setError(errorMsg);
+            alert(errorMsg);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const closePopup = () => {
+        setShowSuccessPopup(false);
+        setForm({ name: '', email: '', subject: '', message: '' });
     };
 
     return (
-        <div className="info-page-container">
-            <div className="info-page-card">
-                <div className="info-page-hero" style={{ background: 'linear-gradient(135deg, #0d7377 0%, #14a085 100%)' }}>
-                    <span className="info-page-icon">📞</span>
-                    <h1>Contact Us</h1>
-                    <p className="info-subtitle">We're here to help — reach out anytime!</p>
-                </div>
+        <div className="contact-page">
+            <section className="contact-hero">
+                <h1>Contact Us</h1>
+                <p>We would love to hear from you</p>
+            </section>
 
-                <div className="info-content contact-layout">
-                    {/* Left: Info */}
-                    <div className="contact-info-col">
-                        <h2>Get in Touch</h2>
-                        <div className="contact-detail">
-                            <span>📧</span>
-                            <div>
-                                <strong>Email</strong>
-                                <a href="mailto:support@fashionhub.com">support@fashionhub.com</a>
-                            </div>
-                        </div>
-                        <div className="contact-detail">
-                            <span>📱</span>
-                            <div>
-                                <strong>Phone</strong>
-                                <span>+91 9876543210</span>
-                            </div>
-                        </div>
-                        <div className="contact-detail">
-                            <span>🏢</span>
-                            <div>
-                                <strong>Office</strong>
-                                <span>FashionHub Pvt Ltd<br />Chennai, Tamil Nadu, India</span>
-                            </div>
-                        </div>
-                        <div className="contact-detail">
-                            <span>🕐</span>
-                            <div>
-                                <strong>Support Hours</strong>
-                                <span>Mon – Sat: 9:00 AM – 6:00 PM</span>
-                            </div>
+            <div className="contact-container">
+                {/* Information Section */}
+                <div className="contact-info-section">
+                    <div className="info-card">
+                        <div className="info-icon"><FaEnvelope /></div>
+                        <div className="info-details">
+                            <h4>Email</h4>
+                            <a href="mailto:fashionhub@gmail.com">fashionhub@gmail.com</a>
                         </div>
                     </div>
 
-                    {/* Right: Form */}
-                    <div className="contact-form-col">
-                        <h2>Send us a Message</h2>
-                        {submitted ? (
-                            <div className="info-highlight-box" style={{ textAlign: 'center' }}>
-                                <p style={{ fontSize: '40px' }}>✅</p>
-                                <h3>Message Received!</h3>
-                                <p>Thank you, {form.name}. We'll get back to you within 24 hours.</p>
-                            </div>
-                        ) : (
-                            <form className="contact-form" onSubmit={handleSubmit}>
-                                <div className="contact-form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" name="name" value={form.name} onChange={handleChange} required placeholder="Your name" />
-                                </div>
-                                <div className="contact-form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="email" value={form.email} onChange={handleChange} required placeholder="you@email.com" />
-                                </div>
-                                <div className="contact-form-group">
-                                    <label>Message</label>
-                                    <textarea name="message" value={form.message} onChange={handleChange} required rows="4" placeholder="How can we help you?"></textarea>
-                                </div>
-                                <button type="submit" className="contact-submit-btn">Send Message →</button>
-                            </form>
-                        )}
+                    <div className="info-card">
+                        <div className="info-icon"><FaPhone /></div>
+                        <div className="info-details">
+                            <h4>Phone</h4>
+                            <p>+91 9876543210</p>
+                        </div>
+                    </div>
+
+                    <div className="info-card">
+                        <div className="info-icon"><FaMapMarkerAlt /></div>
+                        <div className="info-details">
+                            <h4>Location</h4>
+                            <p>FashionHub Pvt Ltd, Chennai, Tamil Nadu, India</p>
+                        </div>
+                    </div>
+
+                    <div className="info-card">
+                        <div className="info-icon"><FaClock /></div>
+                        <div className="info-details">
+                            <h4>Support Hours</h4>
+                            <p>Mon – Sat: 9:00 AM – 6:00 PM</p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="info-content">
-                    <div className="info-back-row">
-                        <Link to="/" className="info-back-btn">← Back to Shopping</Link>
-                    </div>
+                {/* Form Section */}
+                <div className="contact-form-section">
+                    <h2>Send us a Message</h2>
+                    {error && <div className="error-msg">{error}</div>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Full Name</label>
+                            <input 
+                                type="text" 
+                                name="name" 
+                                value={form.name} 
+                                onChange={handleChange} 
+                                required 
+                                placeholder="Your name" 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Email</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                value={form.email} 
+                                onChange={handleChange} 
+                                required 
+                                placeholder="you@email.com" 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Subject</label>
+                            <input 
+                                type="text" 
+                                name="subject" 
+                                value={form.subject} 
+                                onChange={handleChange} 
+                                placeholder="What is this about?" 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Message</label>
+                            <textarea 
+                                name="message" 
+                                value={form.message} 
+                                onChange={handleChange} 
+                                required 
+                                rows="5" 
+                                placeholder="How can we help you?"
+                            ></textarea>
+                        </div>
+                        <button type="submit" className="submit-btn" disabled={loading}>
+                            {loading ? 'Sending...' : 'Send Message →'}
+                        </button>
+                    </form>
                 </div>
             </div>
+
+            <div className="back-shopping">
+                <Link to="/" className="back-link">← Back to Shopping</Link>
+            </div>
+
+            {/* Success Popup Modal */}
+            {showSuccessPopup && (
+                <div className="success-popup-overlay">
+                    <div className="success-popup-box">
+                        <div className="success-popup-icon">
+                            <FaCheckCircle />
+                        </div>
+                        <h3>Message Sent Successfully</h3>
+                        <p>Thank you for contacting us. We will get back to you soon.</p>
+                        <button className="popup-ok-btn" onClick={closePopup}>OK</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

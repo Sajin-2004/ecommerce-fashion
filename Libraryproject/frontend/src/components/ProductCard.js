@@ -29,7 +29,7 @@ function ProductCard({ product }) {
       <div className="product-card-inner">
         {/* LEFT SIDE - IMAGE */}
         <div className="product-image-side">
-          {!isAdmin && <div className="wishlist-btn-overlay"><WishlistButton product={product} /></div>}
+          {!isAdmin && <WishlistButton product={product} />}
           <img src={product.image} alt={product.name || product.title} className="premium-image" />
           {discount > 0 && <div className="discount-badge-premium">{discount}% OFF</div>}
         </div>
@@ -37,7 +37,7 @@ function ProductCard({ product }) {
         {/* RIGHT SIDE - DETAILS */}
         <div className="product-details-side">
           <div className="details-header">
-            <h4 className="premium-brand">{product.brand || 'LUXURY COLLECTION'}</h4>
+            <h4 className="product-brand">{product.brand || 'LUXURY COLLECTION'}</h4>
             <h3 className="premium-name">{product.name || product.title}</h3>
           </div>
 

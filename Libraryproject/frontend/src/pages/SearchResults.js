@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import AdBanner from "../components/AdBanner";
 import "./Home.css"; // Reuse home grid styles
 
 function SearchResults() {
@@ -9,6 +10,23 @@ function SearchResults() {
     const [loading, setLoading] = useState(true);
     const location = useLocation();
     const query = new URLSearchParams(location.search).get("q");
+
+    const adContent = [
+        { 
+            title: "EXCLUSIVE DEALS ON PREMIUM FASHION", 
+            subtitle: "Upgrade Your Style with Trending Products", 
+            offerLine: "Limited Time Offer – Up to 50% OFF",
+            discount: "50%",
+            image: "https://m.media-amazon.com/images/I/61T4fvnm4uL._AC_UF1000,1000_QL80_.jpg"
+        },
+        { 
+            title: "NEW SEASON COLLECTIONS", 
+            subtitle: "Discover the Latest Men's & Kids' Trends", 
+            offerLine: "Shop the Collection – Save Big Today",
+            discount: "40%",
+            image: "https://rukminim2.flixcart.com/image/480/480/kuvkcy80/hanger/e/f/v/1-multi-function-8-in-1-cloth-hanger-magic-scalable-360-rotating-original-imag7wgqphptebrg.jpeg?q=90"
+        }
+    ];
 
     useEffect(() => {
         const fetchAndFilterProducts = async () => {
@@ -37,6 +55,32 @@ function SearchResults() {
         fetchAndFilterProducts();
     }, [query]);
 
+    const renderProductsWithAds = () => {
+        const elements = [];
+        const adInterval = 4; // After every 4 products (one row)
+
+        products.forEach((product, index) => {
+            elements.push(<ProductCard key={`prod-${product._id || index}`} product={product} />);
+            
+            // If we've reached the interval, insert an ad banner
+            if ((index + 1) % adInterval === 0 && (index + 1) !== products.length) {
+                const adIndex = (Math.floor((index + 1) / adInterval) - 1) % adContent.length;
+                elements.push(
+                    <AdBanner 
+                        key={`ad-${index}`} 
+                        title={adContent[adIndex].title} 
+                        subtitle={adContent[adIndex].subtitle} 
+                        offerLine={adContent[adIndex].offerLine}
+                        discount={adContent[adIndex].discount}
+                        image={adContent[adIndex].image}
+                    />
+                );
+            }
+        });
+
+        return elements;
+    };
+
     return (
         <div className="home-container" style={{ paddingTop: '20px' }}>
             <div className="products-section">
@@ -55,9 +99,7 @@ function SearchResults() {
                 ) : (
                     <div className="products-grid">
                         {products.length > 0 ? (
-                            products.map((product, index) => (
-                                <ProductCard key={index} product={product} />
-                            ))
+                            renderProductsWithAds()
                         ) : (
                             <div style={{ padding: '40px', textAlign: 'center', width: '100%', gridColumn: 'span 4' }}>
                                 <p>We couldn't find any matches for your search. Try different keywords.</p>

@@ -29,6 +29,12 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: {
     type: String,
     default: "COD"
+  },
+  razorpayOrderId: String,
+  paymentId: String,
+  paymentStatus: {
+    type: String,
+    default: "Pending" // e.g., Pending, Completed, Failed
   }
 });
 

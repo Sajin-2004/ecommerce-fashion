@@ -19,6 +19,14 @@
     transition: all 0.3s ease;
 }
 
+/* Override default blue outline on focus/active specifically for the category dropdown button */
+.nav-dropbtn-premium:focus,
+.nav-dropbtn-premium:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -199,13 +207,20 @@
     font-size: 14px;
     color: #444;
     font-weight: 500;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.submenu-content p:focus,
+.submenu-content p:active {
+    background: transparent;
+    outline: none;
 }
 
 .submenu-content p:hover {
-    background: var(--primary-yellow);
-    color: var(--luxury-black);
-    padding-left: 25px;
+    background-color: #FFC107;
+    color: #000;
+    border-radius: 6px;
 }
 
 /* Account Dropdown */
@@ -354,6 +369,11 @@
     transform: scale(1.1);
 }
 
+.dropdown-icon{
+  font-size: 20px;
+  color: black;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .nav-container {
@@ -448,4 +468,4 @@
         background: #fff;
         color: var(--primary-yellow);
     }
-}
+}

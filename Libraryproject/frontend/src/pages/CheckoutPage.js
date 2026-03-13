@@ -52,36 +52,102 @@ const CheckoutPage = ({ setShowPopup }) => {
     const deliveryCharges = subtotal > 500 ? 0 : 40;
     const finalAmount = subtotal + deliveryCharges;
 
-    const handlePlaceOrder = async () => {
+    const handleRazorpayPayment = async (orderPayload) => {
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            const userId = user ? user._id : null;
+            // 1. Create Razorpay Order on Backend
+            const { data: rzpOrder } = await axios.post("http://localhost:5000/api/payment/create-order", {
+                amount: finalAmount
+            });
 
-            const productsToOrder = itemsToDisplay.map(item => ({
-                productId: item.productId || item._id,
-                brand: item.brand,
-                price: item.price,
-                quantity: item.quantity
-            }));
+            // 2. Open Razorpay Checkout
+            const options = {
+                key: "rzp_test_placeholder_key", // Should ideally come from backend or env
+                amount: rzpOrder.amount,
+                currency: rzpOrder.currency,
+                name: "FashionHub",
+                description: "Luxury Fashion Checkout",
+                order_id: rzpOrder.id,
+                handler: async (response) => {
+                    try {
+                        // 3. Verify Payment on Backend
+                        const verifyPayload = {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        };
+                        const { data: verification } = await axios.post("http://localhost:5000/api/payment/verify-payment", verifyPayload);
 
-            const orderPayload = {
-                userId,
-                products: productsToOrder,
-                totalPrice: finalAmount,
-                address: address,
-                paymentMethod: selectedPayment.toUpperCase(),
+                        if (verification.success) {
+                            // 4. Create Final Order with Payment Details
+                            const finalOrderPayload = {
+                                ...orderPayload,
+                                razorpayOrderId: response.razorpay_order_id,
+                                paymentId: response.razorpay_payment_id,
+                                paymentStatus: "Completed"
+                            };
+                            const res = await axios.post("http://localhost:5000/api/orders/create", finalOrderPayload);
+                            
+                            if (res.status === 201) {
+                                if (!buyProduct) clearCart();
+                                navigate("/order-success", { state: { order: res.data.order } });
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Verification error:", err);
+                        alert("Payment verification failed. Please contact support.");
+                    }
+                },
+                prefill: {
+                    name: address.name,
+                    contact: address.phone
+                },
+                theme: {
+                    color: "#FFC107"
+                }
             };
 
-            const res = await axios.post("http://localhost:5000/api/orders/create", orderPayload);
+            const rzp = new window.Razorpay(options);
+            rzp.open();
 
-            if (res.status === 201 || res.data.message) {
-                setShowPopup(true);
-                if (!buyProduct) clearCart();
-                navigate("/");
-            }
         } catch (err) {
-            console.error("Order error:", err.response?.data || err.message);
-            alert("Error placing order. Please try again.");
+            console.error("Razorpay initiation error:", err);
+            alert("Error initiating Razorpay. Please try again.");
+        }
+    };
+
+    const handlePlaceOrder = async () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user ? user._id : null;
+
+        const productsToOrder = itemsToDisplay.map(item => ({
+            productId: item.productId || item._id,
+            brand: item.brand,
+            price: item.price,
+            quantity: item.quantity
+        }));
+
+        const orderPayload = {
+            userId,
+            products: productsToOrder,
+            totalPrice: finalAmount,
+            address: address,
+            paymentMethod: selectedPayment.toUpperCase(),
+        };
+
+        if (selectedPayment === "razorpay") {
+            await handleRazorpayPayment(orderPayload);
+        } else {
+            // COD Flow
+            try {
+                const res = await axios.post("http://localhost:5000/api/orders/create", orderPayload);
+                if (res.status === 201) {
+                    if (!buyProduct) clearCart();
+                    navigate("/order-success", { state: { order: res.data.order } });
+                }
+            } catch (err) {
+                console.error("Order error:", err);
+                alert("Error placing order. Please try again.");
+            }
         }
     };
 

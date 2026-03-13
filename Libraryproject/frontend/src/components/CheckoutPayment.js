@@ -3,8 +3,7 @@ import React from 'react';
 const CheckoutPayment = ({ selectedMethod, setSelectedMethod }) => {
     const methods = [
         { id: 'cod', label: 'Cash on Delivery', description: 'Pay at your doorstep' },
-        { id: 'upi', label: 'UPI', description: 'Google Pay, PhonePe, Paytm' },
-        { id: 'card', label: 'Credit / Debit Card', description: 'All major cards accepted' }
+        { id: 'razorpay', label: 'Online Payment (Razorpay)', description: 'Safe & Secure via Cards, UPI, NetBanking' }
     ];
 
     return (

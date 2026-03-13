@@ -1,0 +1,85 @@
+/* ProductImageSlider.css */
+
+.slider-container {
+    overflow: hidden;
+    width: 100%;
+    padding: 30px 0;
+    margin: 20px 0;
+    background: #ffffff;
+    position: relative;
+    
+}
+
+.slider-track {
+    display: flex;
+    gap: 30px;
+    /* The animation duration can be adjusted here if it moves too fast/slow */
+    animation: slideImages 65s linear infinite;
+    width: max-content;
+    opacity: 0.9;
+}
+
+.slider-track:hover {
+    /* Optional: Pause animation on hover */
+    animation-play-state: paused;
+    transform: scale(1.1);   /* zoom effect */
+  filter: brightness(1.1);    
+}
+
+.slider-image {
+    width: 200px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(238, 236, 236, 0.08);
+    transition: transform 0.45s ease, box-shadow 0.45s ease, filter 0.45s ease;
+    cursor: pointer;
+}
+
+.slider-image:hover {
+    transform: scale(1.06);
+    box-shadow: 
+    0 10px 25px rgba(0,0,0,0.12),
+    0 4px 12px rgba(0,0,0,0.08);
+    filter: brightness(1.05);
+}
+
+@keyframes slideImages {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Move half of the total width since we duplicated the array */
+        transform: translateX(calc(-50% - 10px)); /* subtracting half the gap to be precise */
+    }
+}
+
+/* Responsive constraints to fit 6-8 desktop, 4-5 tablet, 3 mobile */
+@media (max-width: 1200px) {
+    .slider-image {
+        width: 180px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 900px) {
+    .slider-image {
+        width: 150px;
+        height: 190px;
+    }
+}
+
+@media (max-width: 600px) {
+    .slider-image {
+        width: 120px;
+        height: 150px;
+        gap: 15px;
+    }
+    .slider-track {
+        gap: 15px;
+    }
+    @keyframes slideImages {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-50% - 7.5px)); }
+    }
+}

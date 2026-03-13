@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -11,6 +12,8 @@ const orderRoutes = require("./routes/orderRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const uploadRoute = require("./routes/uploadRoute");
 const wishlistRoutes = require("./routes/wishlistRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 
 
@@ -22,8 +25,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin/upload-products", uploadRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
-
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use("/api/contact", contactRoutes);
 
 
 /* ---------------- MongoDB Connection ---------------- */

@@ -1,0 +1,193 @@
+.ad-banner-container {
+    grid-column: 1 / -1;
+    margin: 50px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ad-banner {
+    width: 100%;
+    max-width: 1300px;
+    height: 320px; /* Tall enough for product image */
+    background: linear-gradient(120deg, #383636 0%, #4d4949 60%, #efd95c 150%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    padding: 0 80px;
+    transition: transform 0.3s ease;
+}
+
+.ad-banner:hover {
+    transform: translateY(-5px);
+}
+
+.ad-text-section {
+    flex: 1;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ad-title {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    background: linear-gradient(to bottom, #FFD700 0%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+}
+
+.ad-subtitle {
+    font-size: 18px;
+    color: #ffffff;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 500;
+}
+
+.ad-offer-badge {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #FFD700;
+    color: #FFD700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ad-shop-now-btn {
+    margin-top: 10px;
+    background: #FFD700;
+    color: #000000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: fit-content;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+}
+
+.ad-shop-now-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
+    background: #ffffff;
+}
+
+.ad-image-section {
+    flex: 0 0 45%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.ad-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-product-img {
+    width: 100%;
+    height: auto;
+    max-height: 380px; /* Pop out slightly */
+    object-fit: contain;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
+    animation: float 4s ease-in-out infinite;
+    transform: rotate(-10deg);
+}
+
+.ad-banner:hover .ad-product-img {
+    transform: rotate(0deg) scale(1.1);
+}
+
+.ad-discount-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #3c3b3b; /* Reverting to eye-catching red as per earlier attractive request */
+    color: white;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    box-shadow: 0 10px 20px rgba(142, 108, 113, 0.3);
+    z-index: 5;
+    animation: badge-pulse 2s infinite;
+}
+
+.ad-discount-badge span:first-child {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.ad-discount-badge span:last-child {
+    font-size: 10px;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(-10deg); }
+    50% { transform: translateY(-20px) rotate(-5deg); }
+    100% { transform: translateY(0px) rotate(-10deg); }
+}
+
+@keyframes badge-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(62, 61, 61, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+@media (max-width: 1024px) {
+    .ad-banner {
+        padding: 0 40px;
+        height: 280px;
+    }
+    .ad-title { font-size: 28px; }
+}
+
+@media (max-width: 768px) {
+    .ad-banner {
+        flex-direction: column;
+        height: auto;
+        padding: 40px 20px;
+        text-align: center;
+    }
+    .ad-text-section {
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .ad-image-section {
+        width: 100%;
+        flex: 1;
+    }
+    .ad-product-img {
+        max-height: 250px;
+    }
+}
