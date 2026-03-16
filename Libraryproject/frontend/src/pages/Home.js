@@ -10,36 +10,58 @@ function Home({ products, fetchProducts }) {
 
     const adContent = [
         { 
-            title: "MEN'S PREMIUM SHIRTS", 
-            subtitle: "Smart Styles for Every Occasion", 
-            offerLine: "Special Offer – Up to 50% OFF",
+            title: "PREMIUM MEN'S SHIRTS", 
+            subtitle: "Smart Styles for Work & Events", 
+            offerLine: "Flat 50% OFF",
             discount: "50%",
-            path: "/products?category=mens&subcategory=shirt",
-            image: "https://m.media-amazon.com/images/I/61T4fvnm4uL._AC_UF1000,1000_QL80_.jpg"
+            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80",
+            category: "mens",
+            subcategory: "shirts"
         },
         { 
-            title: "KIDS' TRENDY T-SHIRTS", 
-            subtitle: "Bright Colors & Fun Prints", 
-            offerLine: "Limited Deal – 30% OFF",
-            discount: "30%",
-            path: "/products?category=kids&subcategory=t-shirt",
-            image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRK0cJN_g7laIaEnTWinYjjb_pVvf3puW9asIXrhHu3bBefqPHHp6ZyDFHXFp5bYCQpmqBsKOvMgFpv-8Floe6Uh5q1ylKuUw"
+            title: "TRENDY MEN'S T-SHIRTS", 
+            subtitle: "Essential Comfort for Everyday Wear", 
+            offerLine: "Buy 2 Get 1 Free",
+            discount: "B2G1",
+            image: "https://i.pinimg.com/736x/7d/90/c1/7d90c17c01b14c1a9cae31aad749c9c8.jpg",
+            category: "mens",
+            subcategory: "tshirts"
         },
         { 
-            title: "STYLE UP: MEN'S T-SHIRTS", 
-            subtitle: "Modern Street Style Essentials", 
-            offerLine: "Hot Picks – Flat 40% OFF",
+            title: "MEN'S STYLISH PANTS", 
+            subtitle: "Perfect Fit for Every Occasion", 
+            offerLine: "Up to 45% OFF",
+            discount: "45%",
+            image: "https://images-cdn.ubuy.co.in/6362461b5811a62db4505b67-zmydz-men-stretch-straight-fit-jeans-men.jpg",
+            category: "mens",
+            subcategory: "pants"
+        },
+        { 
+            title: "CUTE KIDS SHIRTS", 
+            subtitle: "Colorful Styles for Your Little Ones", 
+            offerLine: "Mini Fashion – 40% OFF",
             discount: "40%",
-            path: "/products?category=mens&subcategory=t-shirt",
-            image: "https://i.pinimg.com/736x/7d/90/c1/7d90c17c01b14c1a9cae31aad749c9c8.jpg"
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnxl5VxEJdFUUUtSGyv0RLg7bvAc5WH235-Q&s",
+            category: "kids",
+            subcategory: "shirts"
         },
         { 
-            title: "KIDS' STYLISH PANTS", 
-            subtitle: "Comfortable Play-Ready Fits", 
-            offerLine: "Special Price – Save 35%",
+            title: "FUN KIDS T-SHIRTS", 
+            subtitle: "Play-Ready Comfort with Cool Prints", 
+            offerLine: "Kids Choice – 30% OFF",
+            discount: "30%",
+            image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT0Pb1dMLQuAQ3DOhnmHsDqz21xfdYI-VLDPTW5p84n2XFh687tl2PLGAcaorGmj2Cggo5kXfGJot-oJ92O3b6tKRNRq4USJ8iTeDXWU3pe8gNMpCD9aPnP2HqzfU5T60210c1kEjLWOGo&usqp=CAc",
+            category: "kids",
+            subcategory: "tshirts"
+        },
+        { 
+            title: "DURABLE KIDS PANTS", 
+            subtitle: "Tough Enough for Any Adventure", 
+            offerLine: "Save 35% Today",
             discount: "35%",
-            path: "/products?category=kids&subcategory=pant",
-            image: "https://5.imimg.com/data5/SELLER/Default/2025/7/529128387/MO/LJ/IW/154937683/cargo-pant.jpg"
+            image: "https://5.imimg.com/data5/SELLER/Default/2025/7/529128387/MO/LJ/IW/154937683/cargo-pant.jpg",
+            category: "kids",
+            subcategory: "pants"
         }
     ];
 
@@ -50,7 +72,7 @@ function Home({ products, fetchProducts }) {
     const renderProductsWithAds = () => {
         const elements = [];
         const adInterval = 4; // After every 4 products (one row)
-        const displayProducts = products.slice(0, 16); // Show up to 4 rows on home page
+        const displayProducts = products.slice(0, 24); // Show more products to accommodate all 6 ads
 
         displayProducts.forEach((product, index) => {
             elements.push(<ProductCard key={`prod-${product._id || index}`} product={product} />);
@@ -66,7 +88,8 @@ function Home({ products, fetchProducts }) {
                         offerLine={adContent[adIndex].offerLine}
                         discount={adContent[adIndex].discount}
                         image={adContent[adIndex].image}
-                        path={adContent[adIndex].path}
+                        category={adContent[adIndex].category}
+                        subcategory={adContent[adIndex].subcategory}
                     />
                 );
             }
