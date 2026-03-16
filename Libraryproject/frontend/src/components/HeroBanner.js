@@ -19,7 +19,12 @@ const HeroBanner = () => {
             id: 3,
             image: 'https://img.freepik.com/free-psd/banner-urban-fashion-template_23-2148652497.jpg',
             category: 'mens'
-        }
+        },
+        {
+            id: 4,
+            image: 'https://mir-s3-cdn-cf.behance.net/project_modules/hd/b23f37117518103.60773790202d1.png',
+            category: 'kids'
+        },
     ];
 
     const [current, setCurrent] = useState(0);

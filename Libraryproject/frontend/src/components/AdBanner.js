@@ -1,12 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdBanner.css';
 
-const AdBanner = ({ title, subtitle, offerLine, image, discount }) => {
+const AdBanner = ({ title, subtitle, offerLine, image, discount, path }) => {
+    const navigate = useNavigate();
     const fallbackImage = "https://m.media-amazon.com/images/I/61T4fvnm4uL._AC_UF1000,1000_QL80_.jpg";
     
     return (
         <div className="ad-banner-container">
-            <div className="ad-banner">
+            <div 
+                className="ad-banner" 
+                onClick={() => path && navigate(path)}
+                style={{ cursor: path ? 'pointer' : 'default' }}
+            >
                 <div className="ad-text-section">
                     <h2 className="ad-title">{title}</h2>
                     <p className="ad-subtitle">{subtitle}</p>

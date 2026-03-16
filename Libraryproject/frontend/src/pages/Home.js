@@ -10,18 +10,36 @@ function Home({ products, fetchProducts }) {
 
     const adContent = [
         { 
-            title: "EXCLUSIVE DEALS ON PREMIUM FASHION", 
-            subtitle: "Upgrade Your Style with Trending Products", 
-            offerLine: "Limited Time Offer – Up to 50% OFF",
+            title: "MEN'S PREMIUM SHIRTS", 
+            subtitle: "Smart Styles for Every Occasion", 
+            offerLine: "Special Offer – Up to 50% OFF",
             discount: "50%",
+            path: "/products?category=mens&subcategory=shirt",
             image: "https://m.media-amazon.com/images/I/61T4fvnm4uL._AC_UF1000,1000_QL80_.jpg"
         },
         { 
-            title: "NEW SEASON COLLECTIONS", 
-            subtitle: "Discover the Latest Men's & Kids' Trends", 
-            offerLine: "Shop the Collection – Save Big Today",
-            discount: "40%",
+            title: "KIDS' TRENDY T-SHIRTS", 
+            subtitle: "Bright Colors & Fun Prints", 
+            offerLine: "Limited Deal – 30% OFF",
+            discount: "30%",
+            path: "/products?category=kids&subcategory=t-shirt",
             image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRK0cJN_g7laIaEnTWinYjjb_pVvf3puW9asIXrhHu3bBefqPHHp6ZyDFHXFp5bYCQpmqBsKOvMgFpv-8Floe6Uh5q1ylKuUw"
+        },
+        { 
+            title: "STYLE UP: MEN'S T-SHIRTS", 
+            subtitle: "Modern Street Style Essentials", 
+            offerLine: "Hot Picks – Flat 40% OFF",
+            discount: "40%",
+            path: "/products?category=mens&subcategory=t-shirt",
+            image: "https://i.pinimg.com/736x/7d/90/c1/7d90c17c01b14c1a9cae31aad749c9c8.jpg"
+        },
+        { 
+            title: "KIDS' STYLISH PANTS", 
+            subtitle: "Comfortable Play-Ready Fits", 
+            offerLine: "Special Price – Save 35%",
+            discount: "35%",
+            path: "/products?category=kids&subcategory=pant",
+            image: "https://5.imimg.com/data5/SELLER/Default/2025/7/529128387/MO/LJ/IW/154937683/cargo-pant.jpg"
         }
     ];
 
@@ -48,6 +66,7 @@ function Home({ products, fetchProducts }) {
                         offerLine={adContent[adIndex].offerLine}
                         discount={adContent[adIndex].discount}
                         image={adContent[adIndex].image}
+                        path={adContent[adIndex].path}
                     />
                 );
             }
