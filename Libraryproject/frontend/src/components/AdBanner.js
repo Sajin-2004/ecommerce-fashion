@@ -11,7 +11,6 @@ const AdBanner = ({ title, subtitle, offerLine, image, discount }) => {
                     <h2 className="ad-title">{title}</h2>
                     <p className="ad-subtitle">{subtitle}</p>
                     <div className="ad-offer-badge">{offerLine}</div>
-                    <button className="ad-shop-now-btn">Shop Now</button>
                 </div>
 
                 <div className="ad-image-section">

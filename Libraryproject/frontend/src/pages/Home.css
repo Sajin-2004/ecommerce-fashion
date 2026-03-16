@@ -6,7 +6,7 @@
 
 .products-section {
     max-width: 1400px;
-    margin: 100px auto;
+    margin: 20px auto 80px;
     padding: 0 40px;
 }
 
@@ -59,7 +59,7 @@
     }
     .products-section {
         padding: 0 20px;
-        margin: 50px auto;
+        margin: 20px auto 40px;
     }
     .section-header h3 {
         font-size: 28px;

@@ -4,6 +4,7 @@ import { CartContext } from "../context/CartContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutAddress from "../components/CheckoutAddress";
 import CheckoutPayment from "../components/CheckoutPayment";
+import { FaLock, FaTruck, FaUndo, FaShieldAlt, FaTicketAlt } from "react-icons/fa";
 import "./CheckoutPage.css";
 import "./CartPage.css"; // Reuse summary styles
 
@@ -14,6 +15,7 @@ const CheckoutPage = ({ setShowPopup }) => {
 
     const buyProduct = location.state?.buyProduct;
     const [buyQuantity, setBuyQuantity] = useState(location.state?.quantity || 1);
+    const [couponCode, setCouponCode] = useState("");
 
     const subtotal = buyProduct
         ? buyProduct.price * buyQuantity
@@ -321,7 +323,66 @@ const CheckoutPage = ({ setShowPopup }) => {
                             <p className="savings-highlight">You are saving ₹{discount.toLocaleString()} with our best offers!</p>
                         </div>
                     </div>
-                    
+
+                    {/* Promotional Banner */}
+                    <div className="promo-banner-card shadow-card">
+                        <div className="promo-tag">NEW OFFER</div>
+                        <div className="promo-content">
+                            <h3>Get 10% OFF on your first order</h3>
+                            <p>Use code: <strong>WELCOME10</strong></p>
+                        </div>
+                    </div>
+
+                    {/* Apply Coupon Section */}
+                    <div className="coupon-section-card shadow-card">
+                        <div className="section-title">
+                            <FaTicketAlt className="title-icon" />
+                            Apply Coupon
+                        </div>
+                        <div className="coupon-input-group">
+                            <input 
+                                type="text" 
+                                placeholder="Enter coupon code" 
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                            />
+                            <button className="apply-coupon-btn">APPLY</button>
+                        </div>
+                        <p className="coupon-hint">Try <strong>FASHION10</strong> for 10% OFF</p>
+                    </div>
+
+                    {/* Secure Checkout Section */}
+                    <div className="secure-checkout-card shadow-card">
+                        <div className="trust-item">
+                            <FaLock className="trust-icon" />
+                            <div className="trust-text">
+                                <strong>Secure Payment</strong>
+                                <span>100% Protected Payment</span>
+                            </div>
+                        </div>
+                        <div className="trust-item">
+                            <FaUndo className="trust-icon" />
+                            <div className="trust-text">
+                                <strong>Easy 7 Day Returns</strong>
+                                <span>Hassle-free return policy</span>
+                            </div>
+                        </div>
+                        <div className="trust-item">
+                            <FaTruck className="trust-icon" />
+                            <div className="trust-text">
+                                <strong>Fast Delivery</strong>
+                                <span>Quick delivery to your doorstep</span>
+                            </div>
+                        </div>
+                        <div className="trust-item">
+                            <FaShieldAlt className="trust-icon" />
+                            <div className="trust-text">
+                                <strong>100% Genuine</strong>
+                                <span>Authentic fashion products</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="checkout-trust-info">
                         <p>Safe and Secure Payments. 100% Authentic products.</p>
                     </div>

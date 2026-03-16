@@ -55,25 +55,6 @@
     font-weight: 400;
 }
 
-.cat-banner-btn {
-    background: #ffffff;
-    color: #000000;
-    border: none;
-    padding: 12px 28px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    width: fit-content;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.cat-banner-btn:hover {
-    background: #FFD700;
-    transform: translateX(5px);
-    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
-}
 
 .cat-banner-image-container {
     flex: 0 0 35%;
@@ -101,6 +82,51 @@
     background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%);
     z-index: 1;
     border-radius: 50%;
+}
+
+.cat-discount-badge {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 80px;
+    height: 80px;
+    background: #FFD700; /* Gold/Yellow */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: 800;
+    font-size: 16px;
+    text-align: center;
+    line-height: 1.1;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    animation: float-badge 4s ease-in-out infinite;
+    border: 3px solid #FFF;
+}
+
+@keyframes float-badge {
+    0%, 100% { transform: translateY(0) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-5deg); }
+}
+
+.cat-banner-offer {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.cat-banner-offer-text {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-block;
 }
 
 @keyframes float-slow {

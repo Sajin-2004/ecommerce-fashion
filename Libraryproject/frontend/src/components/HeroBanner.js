@@ -7,7 +7,7 @@ const HeroBanner = () => {
     const banners = [
         {
             id: 1,
-            image: 'https://i.pinimg.com/736x/de/f6/7a/def67a51cdbb2723cd7b07e4dc30fc0e.jpg',
+            image: 'https://i.pinimg.com/1200x/95/f9/16/95f916f0e120311e8c76893a412e3077.jpg',
             category: 'all'
         },
         {
@@ -17,7 +17,7 @@ const HeroBanner = () => {
         },
         {
             id: 3,
-            image: 'https://i.pinimg.com/1200x/95/f9/16/95f916f0e120311e8c76893a412e3077.jpg',
+            image: 'https://img.freepik.com/free-psd/banner-urban-fashion-template_23-2148652497.jpg',
             category: 'mens'
         }
     ];

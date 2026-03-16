@@ -11,11 +11,6 @@ function WishlistPage() {
     return (
         <div className="wishlist-page-container">
             <div className="wishlist-wrapper">
-                <header className="wishlist-header-section">
-                    <h1 className="wishlist-title">My Wishlist</h1>
-                    <p className="wishlist-subtitle">Items you saved for later</p>
-                </header>
-
                 {wishlist.length === 0 ? (
                     <div className="empty-wishlist-state">
                         <div className="empty-wishlist-icon">
