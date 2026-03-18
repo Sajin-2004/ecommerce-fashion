@@ -32,9 +32,12 @@ app.use("/api/contact", contactRoutes);
 
 /* ---------------- MongoDB Connection ---------------- */
 
-mongoose.connect("mongodb://localhost:27017/fashionhub")
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB Atlas Connected"))
+.catch(err => console.log(err));
 
 
 /* ---------------- Test Route ---------------- */
