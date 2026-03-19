@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +13,7 @@ function AdminDashboard() {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem("adminToken");
-                const res = await axios.get("http://localhost:5000/api/admin/users", {
+                const res = await axios.get(`${API_BASE_URL}/api/admin/users`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUsers(res.data);

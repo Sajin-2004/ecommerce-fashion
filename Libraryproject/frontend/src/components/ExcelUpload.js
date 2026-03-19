@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 const ExcelUpload = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
@@ -36,7 +37,7 @@ const ExcelUpload = ({ onUploadSuccess }) => {
 
         try {
             const token = localStorage.getItem("adminToken");
-            const res = await axios.post("http://localhost:5000/api/admin/upload-products", formData, {
+            const res = await axios.post(`${API_BASE_URL}/api/admin/upload-products`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`

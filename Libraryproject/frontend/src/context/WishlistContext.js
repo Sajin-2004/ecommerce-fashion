@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 export const WishlistContext = createContext();
 
@@ -12,7 +13,7 @@ export const WishlistProvider = ({ children }) => {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user && user._id) {
                 try {
-                    const res = await axios.get(`http://localhost:5000/api/wishlist/${user._id}`);
+                    const res = await axios.get(`${API_BASE_URL}/api/wishlist/${user._id}`);
                     setWishlist(res.data);
                 } catch (error) {
                     console.error("Error fetching wishlist:", error);
@@ -34,7 +35,7 @@ export const WishlistProvider = ({ children }) => {
         if (isInList) {
             // Remove
             try {
-                await axios.post("http://localhost:5000/api/wishlist/remove", {
+                await axios.post(`${API_BASE_URL}/api/wishlist/remove`, {
                     userId: user._id,
                     productId: product._id || product.productId
                 });
@@ -57,7 +58,7 @@ export const WishlistProvider = ({ children }) => {
                     image: product.image,
                     rating: product.rating
                 };
-                const res = await axios.post("http://localhost:5000/api/wishlist/add", payload);
+                const res = await axios.post(`${API_BASE_URL}/api/wishlist/add`, payload);
 
                 setWishlist([...wishlist, res.data.item]);
             } catch (error) {

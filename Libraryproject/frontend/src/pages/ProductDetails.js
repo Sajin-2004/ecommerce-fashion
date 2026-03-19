@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import { CartContext } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
 import "./ProductDetails.css";
@@ -18,12 +19,12 @@ const ProductDetails = () => {
         const fetchProductAndSimilar = async () => {
             try {
                 setLoading(true);
-                const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+                const res = await axios.get(`${API_BASE_URL}/api/products/${id}`);
                 const prod = res.data;
                 setProduct(prod);
 
                 const subCat = prod.subcategory || prod.type;
-                const similarRes = await axios.get(`http://localhost:5000/api/products/filter/${subCat}/${prod.category}`);
+                const similarRes = await axios.get(`${API_BASE_URL}/api/products/filter/${subCat}/${prod.category}`);
                 setSimilarProducts(similarRes.data.filter(p => p._id !== id).slice(0, 4));
             } catch (err) {
                 console.error("Error fetching product details:", err);

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 import "./App.css";
 
 // Components
@@ -47,7 +48,7 @@ function App() {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         try {
-            const res = await axios.get("http://localhost:5000/api/products", { headers });
+            const res = await axios.get(`${API_BASE_URL}/api/products`, { headers });
             setAllProducts(res.data);
             setProducts(res.data);
         } catch (err) {

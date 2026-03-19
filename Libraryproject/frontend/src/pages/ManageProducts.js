@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
 import ExcelUpload from "../components/ExcelUpload";
@@ -31,7 +32,7 @@ function ManageProducts() {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/products");
+            const res = await axios.get(`${API_BASE_URL}/api/products`);
             setProducts(res.data);
         } catch (error) {
             console.error(error);
@@ -43,7 +44,7 @@ function ManageProducts() {
     const handleAddProduct = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/api/admin/products", newProduct, {
+            await axios.post(`${API_BASE_URL}/api/admin/products`, newProduct, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert("Product added successfully!");
@@ -70,7 +71,7 @@ function ManageProducts() {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this product?")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/admin/products/${id}`, {
+            await axios.delete(`${API_BASE_URL}/api/admin/products/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchProducts();

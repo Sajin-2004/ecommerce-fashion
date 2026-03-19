@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import { CartContext } from "../context/CartContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutAddress from "../components/CheckoutAddress";
@@ -57,7 +58,7 @@ const CheckoutPage = ({ setShowPopup }) => {
     const handleRazorpayPayment = async (orderPayload) => {
         try {
             // 1. Create Razorpay Order on Backend
-            const { data: rzpOrder } = await axios.post("http://localhost:5000/api/payment/create-order", {
+            const { data: rzpOrder } = await axios.post(`${API_BASE_URL}/api/payment/create-order`, {
                 amount: finalAmount
             });
 
@@ -77,7 +78,7 @@ const CheckoutPage = ({ setShowPopup }) => {
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature
                         };
-                        const { data: verification } = await axios.post("http://localhost:5000/api/payment/verify-payment", verifyPayload);
+                        const { data: verification } = await axios.post(`${API_BASE_URL}/api/payment/verify-payment`, verifyPayload);
 
                         if (verification.success) {
                             // 4. Create Final Order with Payment Details
@@ -87,7 +88,7 @@ const CheckoutPage = ({ setShowPopup }) => {
                                 paymentId: response.razorpay_payment_id,
                                 paymentStatus: "Completed"
                             };
-                            const res = await axios.post("http://localhost:5000/api/orders/create", finalOrderPayload);
+                            const res = await axios.post(`${API_BASE_URL}/api/orders/create`, finalOrderPayload);
                             
                             if (res.status === 201) {
                                 if (!buyProduct) clearCart();
@@ -141,7 +142,7 @@ const CheckoutPage = ({ setShowPopup }) => {
         } else {
             // COD Flow
             try {
-                const res = await axios.post("http://localhost:5000/api/orders/create", orderPayload);
+                const res = await axios.post(`${API_BASE_URL}/api/orders/create`, orderPayload);
                 if (res.status === 201) {
                     if (!buyProduct) clearCart();
                     navigate("/order-success", { state: { order: res.data.order } });

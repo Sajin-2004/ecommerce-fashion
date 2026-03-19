@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +13,7 @@ function ManageOrders() {
         const fetchOrders = async () => {
             try {
                 const token = localStorage.getItem("adminToken");
-                const res = await axios.get("http://localhost:5000/api/admin/orders", {
+                const res = await axios.get(`${API_BASE_URL}/api/admin/orders`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setOrders(res.data);

@@ -41,7 +41,7 @@ function Checkout({ product, setPage, setShowPopup }) {
                 paymentMethod
             };
 
-            await axios.post("http://localhost:5000/api/orders", orderPayload, { headers });
+            await axios.post(`${API_BASE_URL}/api/orders`, orderPayload, { headers });
 
             // Show Success Modal
             setShowPopup(true);
