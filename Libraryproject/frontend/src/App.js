@@ -42,7 +42,6 @@ function App() {
     const [allProducts, setAllProducts] = useState([]);
     const [products, setProducts] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
-    const [buyProduct, setBuyProduct] = useState(null);
 
     const fetchProducts = useCallback(async () => {
         const token = localStorage.getItem("token");

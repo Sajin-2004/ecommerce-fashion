@@ -1,0 +1,25 @@
+﻿
+D:\Libraryproject\Libraryproject\frontend\src\App.js
+  45:12  warning  'buyProduct' is assigned a value but never used     no-unused-vars
+  45:24  warning  'setBuyProduct' is assigned a value but never used  no-unused-vars
+
+D:\Libraryproject\Libraryproject\frontend\src\components\AdvertisementBanner.js
+  10:17  warning  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+D:\Libraryproject\Libraryproject\frontend\src\components\HeroBanner.js
+  6:11  warning  'navigate' is assigned a value but never used  no-unused-vars
+
+D:\Libraryproject\Libraryproject\frontend\src\components\Navbar.js
+  4:8  warning  'WishlistIcon' is defined but never used  no-unused-vars
+
+D:\Libraryproject\Libraryproject\frontend\src\pages\CartPage.js
+  10:11  warning  'navigate' is assigned a value but never used  no-unused-vars
+
+D:\Libraryproject\Libraryproject\frontend\src\pages\Checkout.js
+  44:33  error  'API_BASE_URL' is not defined  no-undef
+
+D:\Libraryproject\Libraryproject\frontend\src\pages\MyOrders.js
+  12:48  error  'API_BASE_URL' is not defined  no-undef
+
+Γ£û 8 problems (2 errors, 6 warnings)
+

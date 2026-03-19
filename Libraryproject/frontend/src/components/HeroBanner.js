@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './HeroBanner.css';
 
 const HeroBanner = () => {
-    const navigate = useNavigate();
     const banners = [
         {
             id: 1,

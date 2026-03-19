@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Navbar.css";
 import CartBadge from "./CartBadge";
-import WishlistIcon from "./WishlistIcon";
 import { useNavigate, Link } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import { FiUser, FiPackage, FiLogOut, FiHeart, FiShoppingCart } from "react-icons/fi";

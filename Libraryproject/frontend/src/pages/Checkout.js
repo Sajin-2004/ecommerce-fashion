@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import { CartContext } from "../context/CartContext";
 
 function Checkout({ product, setPage, setShowPopup }) {
